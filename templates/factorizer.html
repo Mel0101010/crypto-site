@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factorisation de N - CryptoTools</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>CryptoTools</h1>
+            <p>Suite d'outils de cryptographie avancés</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/factorizer" class="active">Factorisation de N</a></li>
+                <li><a href="/hash-cracker">Cracker de Hash</a></li>
+                <li><a href="/rsa-extractor">Extracteur RSA</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="tool-header">
+            <h2>Factorisation de N</h2>
+            <p>Cet outil vous permet de factoriser un nombre en ses facteurs premiers. Utile pour l'analyse de sécurité des systèmes RSA.</p>
+        </section>
+
+        <section class="tool-form">
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="number-input">Entrez un nombre à factoriser:</label>
+                    <textarea id="number-input" rows="4" placeholder="Exemple: 143"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Méthode de factorisation:</label>
+                    <div class="radio-group">
+                        <input type="radio" id="method-trial" name="method" value="trial-division" checked>
+                        <label for="method-trial">Division par essais</label>
+                        
+                        <input type="radio" id="method-pollard" name="method" value="pollard-rho">
+                        <label for="method-pollard">Pollard's Rho</label>
+                        
+                        <input type="radio" id="method-qs" name="method" value="quadratic-sieve">
+                        <label for="method-qs">Crible quadratique</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button id="factorize-btn" class="btn btn-primary">Factoriser</button>
+                    <button id="clear-btn" class="btn">Effacer</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="result-section">
+            <h3>Résultats</h3>
+            <div id="loading-indicator" class="hidden">
+                <div class="spinner"></div>
+                <p>Calcul en cours... cela peut prendre du temps pour les grands nombres.</p>
+            </div>
+            <div id="result-container">
+                <div id="result-box" class="result-box">
+                    <p>Les facteurs apparaîtront ici...</p>
+                </div>
+                <div class="result-info hidden" id="result-info">
+                    <p>Temps d'exécution: <span id="execution-time">0</span> ms</p>
+                    <p>Méthode utilisée: <span id="method-used">-</span></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <h3>À propos de la factorisation</h3>
+            <p>La factorisation en nombres premiers est un problème fondamental en cryptographie, en particulier pour la sécurité du chiffrement RSA. La difficulté de factoriser de grands nombres est ce qui rend RSA sécurisé.</p>
+            <p>Méthodes disponibles:</p>
+            <ul>
+                <li><strong>Division par essais</strong> - Simple mais inefficace pour les grands nombres</li>
+                <li><strong>Algorithme Rho de Pollard</strong> - Efficace pour trouver des facteurs de taille moyenne</li>
+                <li><strong>Crible quadratique</strong> - Plus rapide pour les grands nombres (jusqu'à ~100 chiffres)</li>
+            </ul>
+            <p><strong>Note:</strong> La factorisation de très grands nombres peut prendre beaucoup de temps, voire être impossible avec les ressources disponibles.</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 CryptoTools - Tous droits réservés</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/factorizer.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extracteur RSA - CryptoTools</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>CryptoTools</h1>
+            <p>Suite d'outils de cryptographie avancés</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/factorizer">Factorisation de N</a></li>
+                <li><a href="/hash-cracker">Cracker de Hash</a></li>
+                <li><a href="/rsa-extractor" class="active">Extracteur RSA</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="tool-header">
+            <h2>Extracteur de Facteurs RSA</h2>
+            <p>Cet outil analyse et extrait les facteurs d'une clé RSA pour identifier d'éventuelles vulnérabilités.</p>
+        </section>
+
+        <section class="tool-form">
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="key-type">Type d'entrée:</label>
+                    <select id="key-type">
+                        <option value="public-key">Clé publique (format PEM)</option>
+                        <option value="modulus">Modulus (N) seul</option>
+                        <option value="certificate">Certificat X.509</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="key-input">Entrez votre clé RSA ou modulus:</label>
+                    <textarea id="key-input" rows="8" placeholder="-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0JzWGrvuP6MmM+U0V8Pk
+5KpiYQ3CWHGjUGqS9zr8Imv/xOOaZnFF3cC6QP8SXyfZ4Ynh1KOHhoCmYQvVDjHg
+...
+-----END PUBLIC KEY-----"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Options d'analyse:</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="check-common-factors" checked>
+                        <label for="check-common-factors">Vérifier les facteurs courants</label>
+                        
+                        <input type="checkbox" id="check-fermat" checked>
+                        <label for="check-fermat">Méthode de Fermat</label>
+                        
+                        <input type="checkbox" id="check-small-exponent" checked>
+                        <label for="check-small-exponent">Vulnérabilité d'exposant faible</label>
+                        
+                        <input type="checkbox" id="check-shared-primes" checked>
+                        <label for="check-shared-primes">Vérifier les nombres premiers partagés</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button id="analyze-btn" class="btn btn-primary">Analyser la clé</button>
+                    <button id="clear-btn" class="btn">Effacer</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="result-section">
+            <h3>Résultats de l'analyse</h3>
+            <div id="loading-indicator" class="hidden">
+                <div class="spinner"></div>
+                <p>Analyse en cours... cela peut prendre du temps pour les clés complexes.</p>
+            </div>
+            <div id="result-container">
+                <div id="key-info" class="result-box">
+                    <h4>Informations sur la clé</h4>
+                    <p>Les informations apparaîtront ici...</p>
+                </div>
+                
+                <div id="vulnerability-info" class="result-box">
+                    <h4>Vulnérabilités détectées</h4>
+                    <p>Les vulnérabilités apparaîtront ici...</p>
+                </div>
+                
+                <div id="factors-info" class="result-box">
+                    <h4>Facteurs extraits</h4>
+                    <p>Les facteurs apparaîtront ici...</p>
+                </div>
+
+                <div class="result-info hidden" id="result-info">
+                    <p>Temps d'exécution: <span id="execution-time">0</span> ms</p>
+                    <p>Méthodes utilisées: <span id="methods-used">-</span></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <h3>À propos de l'extraction RSA</h3>
+            <p>RSA est un algorithme de chiffrement à clé publique basé sur la difficulté de factoriser le produit de deux grands nombres premiers. Si ces nombres premiers peuvent être retrouvés, la clé privée peut être reconstruite à partir de la clé publique.</p>
+            <p>Méthodes d'analyse implémentées:</p>
+            <ul>
+                <li><strong>Facteurs communs</strong> - Vérifie les facteurs premiers connus et faibles</li>
+                <li><strong>Méthode de Fermat</strong> - Efficace lorsque les facteurs sont proches l'un de l'autre</li>
+                <li><strong>Vulnérabilité d'exposant faible</strong> - Détecte les problèmes avec les petits exposants publics</li>
+                <li><strong>Nombres premiers partagés</strong> - Vérifie si le modulus partage un facteur avec une base de données de nombres premiers connus</li>
+            </ul>
+            <p><strong>Note:</strong> Cet outil est fourni à des fins éducatives uniquement. N'utilisez pas cet outil pour des activités illégales.</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 CryptoTools - Tous droits réservés</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/rsa-extractor.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cracker de Hash - CryptoTools</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>CryptoTools</h1>
+            <p>Suite d'outils de cryptographie avancés</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/factorizer">Factorisation de N</a></li>
+                <li><a href="/hash-cracker" class="active">Cracker de Hash</a></li>
+                <li><a href="/rsa-extractor">Extracteur RSA</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="tool-header">
+            <h2>Cracker de Hash</h2>
+            <p>Cet outil tente de retrouver le texte original à partir d'un hash en utilisant différentes techniques.</p>
+        </section>
+
+        <section class="tool-form">
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="hash-input">Entrez le hash à cracker:</label>
+                    <input type="text" id="hash-input" placeholder="Exemple: 5f4dcc3b5aa765d61d8327deb882cf99">
+                </div>
+
+                <div class="form-group">
+                    <label for="hash-type">Type de hash:</label>
+                    <select id="hash-type">
+                        <option value="md5">MD5</option>
+                        <option value="sha1">SHA-1</option>
+                        <option value="sha256">SHA-256</option>
+                        <option value="sha512">SHA-512</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Mode d'attaque:</label>
+                    <div class="radio-group">
+                        <input type="radio" id="mode-dictionary" name="attack-mode" value="dictionary" checked>
+                        <label for="mode-dictionary">Attaque par dictionnaire</label>
+                        
+                        <input type="radio" id="mode-bruteforce" name="attack-mode" value="bruteforce">
+                        <label for="mode-bruteforce">Force brute</label>
+                    </div>
+                </div>
+
+                <div id="dictionary-options" class="sub-options">
+                    <div class="form-group">
+                        <label for="dictionary-select">Dictionnaire:</label>
+                        <select id="dictionary-select">
+                            <option value="common">Mots de passe communs</option>
+                            <option value="french">Dictionnaire français</option>
+                            <option value="english">Dictionnaire anglais</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="bruteforce-options" class="sub-options hidden">
+                    <div class="form-group">
+                        <label for="charset-select">Jeu de caractères:</label>
+                        <select id="charset-select">
+                            <option value="numeric">Numérique (0-9)</option>
+                            <option value="alpha">Alphabétique (a-z)</option>
+                            <option value="alphanumeric">Alphanumérique (a-z, 0-9)</option>
+                            <option value="full">Complet (a-z, A-Z, 0-9, symboles)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="length-max">Longueur maximale:</label>
+                        <input type="number" id="length-max" min="1" max="10" value="6">
+                        <small>Attention: des valeurs élevées peuvent prendre très longtemps</small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button id="crack-btn" class="btn btn-primary">Cracker le hash</button>
+                    <button id="clear-btn" class="btn">Effacer</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="result-section">
+            <h3>Résultats</h3>
+            <div id="loading-indicator" class="hidden">
+                <div class="spinner"></div>
+                <p>Recherche en cours... cela peut prendre du temps selon la complexité.</p>
+            </div>
+            <div id="result-container">
+                <div id="result-box" class="result-box">
+                    <p>Les résultats apparaîtront ici...</p>
+                </div>
+                <div class="result-info hidden" id="result-info">
+                    <p>Temps d'exécution: <span id="execution-time">0</span> ms</p>
+                    <p>Tentatives: <span id="attempts">0</span></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <h3>À propos du crackage de hash</h3>
+            <p>Le hachage est une fonction à sens unique qui convertit des données en une chaîne de caractères de longueur fixe. Il est théoriquement impossible de retrouver les données originales à partir du hash.</p>
+            <p>Cependant, plusieurs méthodes peuvent être utilisées pour tenter de retrouver le texte original:</p>
+            <ul>
+                <li><strong>Attaque par dictionnaire</strong> - Teste un ensemble prédéfini de mots courants</li>
+                <li><strong>Attaque par force brute</strong> - Teste toutes les combinaisons possibles de caractères</li>
+                <li><strong>Rainbow tables</strong> - Utilise des tables précalculées (non implémenté dans cet outil)</li>
+            </ul>
+            <p><strong>Note:</strong> Cet outil est fourni à des fins éducatives uniquement. N'utilisez pas cet outil pour des activités illégales.</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 CryptoTools - Tous droits réservés</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/hash-cracker.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
