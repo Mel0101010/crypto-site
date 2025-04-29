@@ -41,11 +41,7 @@ cd crypto-tools-web
 ### 2. Backend (Flask)
 
 ```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # Sur Windows : venv\Scripts\activate
-pip install -r requirements.txt
-flask run
+à venir
 ```
 
 Par défaut, Flask tourne sur `http://127.0.0.1:5000/`.
@@ -53,19 +49,16 @@ Par défaut, Flask tourne sur `http://127.0.0.1:5000/`.
 **Fichier `requirements.txt` recommandé :**
 
 ```
-Flask
-Werkzeug
-cryptography
 ```
-
+à venir 
+```
+```
 ---
 
 ### 3. Frontend (React)
 
 ```bash
-cd frontend
-npm install
-npm start
+à venir
 ```
 
 Par défaut, React tourne sur `http://localhost:3000/`.
