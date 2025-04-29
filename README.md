@@ -1,4 +1,3 @@
-```yaml
 # CryptoTools Web
 
 **CryptoTools Web** est une application web dédiée à la cryptographie, offrant plusieurs outils :
@@ -8,7 +7,7 @@
 - 🔐 **Craqueur de hash** : essayez de retrouver le texte original à partir d'un hash connu.
 
 - 🔑 **Vérificateur de clé RSA** : validez les paires de clés RSA pour assurer leur cohérence.
-```
+
 
 ## 📚 Technologies
 
@@ -16,7 +15,7 @@
   
 - **Backend** : [Flask](https://flask.palletsprojects.com/)
   
-  ---
+---
   
 
 ## 🛠 Fonctionnalités prévues
