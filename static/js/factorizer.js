@@ -131,44 +131,4 @@ document.addEventListener('DOMContentLoaded', function() {
             resultBox.innerHTML = factorsHTML;
         }
     }
-
-    // Simuler la factorisation (pour le développement front-end)
-    function simulateFactorization(number, method) {
-        // Cas simples pour le développement
-        const examples = {
-            '143': {
-                success: true,
-                number: '143',
-                prime: false,
-                factorization: [
-                    { base: 11, exponent: 1 },
-                    { base: 13, exponent: 1 }
-                ],
-                method: method
-            },
-            '1024': {
-                success: true,
-                number: '1024',
-                prime: false,
-                factorization: [
-                    { base: 2, exponent: 10 }
-                ],
-                method: method
-            },
-            '17': {
-                success: true,
-                number: '17',
-                prime: true,
-                method: method
-            }
-        };
-
-        return examples[number] || {
-            success: true,
-            number: number,
-            prime: false,
-            factors: [2, 2, number / 4],
-            method: method
-        };
-    }
 });

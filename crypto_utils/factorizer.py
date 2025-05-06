@@ -1,25 +1,23 @@
 """
 Module de factorisation de nombres
 """
-
 import math
 import time
+from factordb.factordb import FactorDB
 
 def factorize_number(number, options=None):
     """
-    Factorise un nombre en ses facteurs premiers (version minimale).
+    Factorise un nombre en ses facteurs premiers.
     
     Args:
         number (str): Le nombre à factoriser
-        options (dict): Options de factorisation (non utilisées dans cette version)
-            
+        options (dict or str): Options de factorisation, "factor-db" pour utiliser FactorDB
+        
     Returns:
         dict: Résultat de la factorisation
     """
     start_time = time.time()
-    
     try:
-        # Convertir l'entrée en entier
         n = int(number.strip())
         if n <= 1:
             return {
@@ -27,8 +25,23 @@ def factorize_number(number, options=None):
                 'error': 'Le nombre doit être supérieur à 1',
                 'execution_time': time.time() - start_time
             }
+        
+        if options == "factor-db":
+            f = FactorDB(n)
+            f.connect()
+            factor_data = f.get_factor_list()
             
-        # Version minimale: division par essai
+            # Vérifier si la factorisation est complète
+            if f.get_status() == "FF":  # FF = "fully factored"
+                return {
+                    'success': True,
+                    'number': n,
+                    'factors': factor_data,
+                    'source': 'FactorDB',
+                    'execution_time': time.time() - start_time
+                }
+        
+        # Version par défaut: division par essai
         factors = []
         
         # Vérifier facteurs 2
@@ -50,8 +63,11 @@ def factorize_number(number, options=None):
             'success': True,
             'number': int(number),
             'factors': factors,
+            'source': 'division par essai',
             'execution_time': time.time() - start_time
         }
+        
+        return result
         
     except Exception as e:
         result = {
@@ -59,5 +75,4 @@ def factorize_number(number, options=None):
             'error': str(e),
             'execution_time': time.time() - start_time
         }
-        
-    return result
+        return result

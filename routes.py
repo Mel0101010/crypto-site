@@ -27,7 +27,8 @@ def register_routes(app):
     def api_factorize():
         data = request.get_json()
         number = data.get('number')
-        result = factorize_number(number)
+        method = data.get('method')
+        result = factorize_number(number, method)
         return jsonify(result)
     
     # API pour le hash cracker

@@ -41,6 +41,9 @@
                 <div class="form-group">
                     <label>Méthode de factorisation:</label>
                     <div class="radio-group">
+                        <input type="radio" id="method-factordb" name="method" value="factor-db" checked>
+                        <label for="factor-db">FactorDB factorisation</label>
+
                         <input type="radio" id="method-trial" name="method" value="trial-division" checked>
                         <label for="method-trial">Division par essais</label>
                         
@@ -81,6 +84,7 @@
             <p>La factorisation en nombres premiers est un problème fondamental en cryptographie, en particulier pour la sécurité du chiffrement RSA. La difficulté de factoriser de grands nombres est ce qui rend RSA sécurisé.</p>
             <p>Méthodes disponibles:</p>
             <ul>
+                <li><strong>FactorDB bdd</strong> - vérifie des nombres connus</li>
                 <li><strong>Division par essais</strong> - Simple mais inefficace pour les grands nombres</li>
                 <li><strong>Algorithme Rho de Pollard</strong> - Efficace pour trouver des facteurs de taille moyenne</li>
                 <li><strong>Crible quadratique</strong> - Plus rapide pour les grands nombres (jusqu'à ~100 chiffres)</li>
