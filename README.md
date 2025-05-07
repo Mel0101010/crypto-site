@@ -1,8 +1,5 @@
 # CryptoTools
 
-```markdown
-# CryptoTools
-
 Suite d'outils cryptographiques pour l'analyse et le déchiffrement, incluant factorisation de nombres, cracking de hash et analyse RSA.
 
 ## 🔧 Fonctionnalités
@@ -83,4 +80,3 @@ Cet outil est conçu à des fins éducatives et d'analyse de sécurité. N'utili
 ## 📝 License
 
 [MIT License](LICENSE)
-```
