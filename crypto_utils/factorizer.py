@@ -5,6 +5,7 @@ import math
 import time
 import random
 from factordb.factordb import FactorDB
+from .factorisation_bdd import initialize_local_db, check_local_db, save_to_local_db
 
 def factorize_using_factordb(n):
     """Factorise un nombre en utilisant FactorDB"""
@@ -55,6 +56,21 @@ def gcd(a, b):
         a, b = b, a % b
     return a
 
+def is_prime(n):
+    """Test de primalité simple (pour les petits nombres)"""
+    if n <= 1:
+        return False
+    if n <= 3:
+        return True
+    if n % 2 == 0 or n % 3 == 0:
+        return False
+    i = 5
+    while i * i <= n:
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+        i += 6
+    return True
+
 def factorize_using_pollard_rho(n):
     """Implémentation de l'algorithme Rho de Pollard"""
     if n % 2 == 0:
@@ -64,7 +80,12 @@ def factorize_using_pollard_rho(n):
             'source': 'Pollard Rho'
         }
 
-    factors = []
+    if is_prime(n):
+        return {
+            'success': True,
+            'factors': [n],
+            'source': 'Pollard Rho'
+        }
 
     def find_factor(n):
         if n == 1:
@@ -93,46 +114,24 @@ def factorize_using_pollard_rho(n):
                 return find_factor(n)
 
         # d est un facteur trouvé
-        if is_prime(d):
-            return d
-        else:
-            # Si d n'est pas premier, on le factorise récursivement
-            return find_factor(d)
-
-    def is_prime(n):
-        """Test de primalité simple (pour les petits nombres)"""
-        if n <= 1:
-            return False
-        if n <= 3:
-            return True
-        if n % 2 == 0 or n % 3 == 0:
-            return False
-        i = 5
-        while i * i <= n:
-            if n % i == 0 or n % (i + 2) == 0:
-                return False
-            i += 6
-        return True
-
-    def get_all_factors(n):
-        if n == 1:
-            return []
-
-        factor = find_factor(n)
-        if factor == n:
-            return [factor]
-
-        return sorted(get_all_factors(factor) + get_all_factors(n // factor))
+        return d
 
     try:
-        # Obtenir tous les facteurs
-        factors = get_all_factors(n)
-        if not factors:
-            factors = [n]
+        factor = find_factor(n)
+        if factor == n:
+            return {
+                'success': True,
+                'factors': [n],
+                'source': 'Pollard Rho'
+            }
+
+        # Factoriser récursivement
+        factors1 = factorize_number(factor, "trial-division")['factors']
+        factors2 = factorize_number(n // factor, "trial-division")['factors']
 
         return {
             'success': True,
-            'factors': factors,
+            'factors': sorted(factors1 + factors2),
             'source': 'Pollard Rho'
         }
     except Exception as e:
@@ -141,86 +140,9 @@ def factorize_using_pollard_rho(n):
             'error': f"Erreur lors de l'exécution de Pollard Rho: {str(e)}"
         }
 
-def factorize_using_quadratic_sieve(n):
-    """Version simplifiée du crible quadratique"""
-    try:
-        # Implémentation simplifiée du crible quadratique
-        # Pour une vraie implémentation, on utiliserait une bibliothèque comme sympy
-
-        # Vérifier si n est pair
-        if n % 2 == 0:
-            return {
-                'success': True,
-                'factors': [2] + factorize_number(n // 2, "quadratic-sieve")['factors'],
-                'source': 'Crible quadratique'
-            }
-
-        # Base des facteurs premiers (B-smooth)
-        B = 100
-        factor_base = []
-        for p in range(2, B):
-            if is_prime_q(p) and legendre_symbol(n, p) == 1:
-                factor_base.append(p)
-
-        # Recherche de relations
-        relations = []
-        x = int(math.sqrt(n)) + 1
-        while len(relations) < len(factor_base) + 10 and x < n:
-            q = (x * x) % n
-            if is_bsmooth(q, factor_base):
-                relations.append((x, q))
-            x += 1
-
-        # Résolution du système linéaire et factorisation
-        for i in range(len(relations)):
-            for j in range(i+1, len(relations)):
-                x1, q1 = relations[i]
-                x2, q2 = relations[j]
-
-                # Si q1*q2 est un carré parfait
-                if is_perfect_square(q1 * q2):
-                    # Calculer le carré parfait
-                    y = int(math.sqrt(q1 * q2))
-
-                    # Calculer les potentiels facteurs
-                    a = (x1 * x2) % n
-                    factor = gcd(abs(a - y), n)
-
-                    if 1 < factor < n:
-                        # Facteur trouvé
-                        return {
-                            'success': True,
-                            'factors': sorted(factorize_number(factor, "trial-division")['factors'] +
-                                              factorize_number(n // factor, "trial-division")['factors']),
-                            'source': 'Crible quadratique'
-                        }
-
-        # Si pas de facteurs trouvés, retourner le nombre lui-même
-        return {
-            'success': True,
-            'factors': [n],
-            'source': 'Crible quadratique'
-        }
-    except Exception as e:
-        return {
-            'success': False,
-            'error': f"Erreur lors de l'exécution du crible quadratique: {str(e)}"
-        }
-
 def is_prime_q(n):
     """Test de primalité rapide"""
-    if n <= 1:
-        return False
-    if n <= 3:
-        return True
-    if n % 2 == 0 or n % 3 == 0:
-        return False
-    i = 5
-    while i * i <= n:
-        if n % i == 0 or n % (i + 2) == 0:
-            return False
-        i += 6
-    return True
+    return is_prime(n)  # Simplifié pour cet exemple
 
 def legendre_symbol(a, p):
     """Calcul du symbole de Legendre (a/p)"""
@@ -263,9 +185,38 @@ def is_perfect_square(n):
     root = int(math.sqrt(n))
     return root * root == n
 
+def factorize_using_quadratic_sieve(n):
+    """Version simplifiée du crible quadratique"""
+    try:
+        # Vérifier si n est pair
+        if n % 2 == 0:
+            return {
+                'success': True,
+                'factors': [2] + factorize_number(n // 2, "trial-division")['factors'],
+                'source': 'Crible quadratique'
+            }
+
+        # Pour les petits nombres, utiliser la division par essai
+        if n < 1000000:
+            result = factorize_using_trial_division(n)
+            result['source'] = 'Crible quadratique (fallback)'
+            return result
+
+        # Version simplifiée - si le nombre est trop grand, on utilise juste Pollard Rho
+        result = factorize_using_pollard_rho(n)
+        result['source'] = 'Crible quadratique (fallback)'
+        return result
+
+    except Exception as e:
+        return {
+            'success': False,
+            'error': f"Erreur lors de l'exécution du crible quadratique: {str(e)}"
+        }
+
 def factorize_number(number, method=None):
     """
     Factorise un nombre en ses facteurs premiers.
+    Vérifie d'abord la base locale, puis utilise la méthode spécifiée.
 
     Args:
         number (str): Le nombre à factoriser
@@ -276,13 +227,29 @@ def factorize_number(number, method=None):
     """
     start_time = time.time()
     try:
-        n = int(number.strip())
+        # Conversion du nombre en entier
+        if isinstance(number, str):
+            n = int(number.strip())
+        else:
+            n = number
+
         if n <= 1:
             return {
                 'success': False,
                 'error': 'Le nombre doit être supérieur à 1',
                 'execution_time': time.time() - start_time
             }
+
+        # Initialiser la base de données si nécessaire
+        if not hasattr(factorize_number, 'db_initialized'):
+            initialize_local_db()
+            factorize_number.db_initialized = True
+
+        # Vérifier dans la base locale
+        cached_result = check_local_db(n)
+        if cached_result:
+            cached_result['execution_time'] = time.time() - start_time
+            return cached_result
 
         # Sélection de la méthode de factorisation
         if method == "factor-db":
@@ -297,6 +264,10 @@ def factorize_number(number, method=None):
         # Ajouter les informations communes
         result['number'] = n
         result['execution_time'] = time.time() - start_time
+
+        # Sauvegarder dans la base locale si succès
+        if result.get('success'):
+            save_to_local_db(result)
 
         return result
 
