@@ -37,7 +37,7 @@ def register_routes(app):
         data = request.get_json()
         hash_value = data.get('hash')
         hash_type = data.get('type')
-        wordlist = data.get('wordlist')
+        wordlist = data.get('dictionary')
         result = crack_hash(hash_value, hash_type, wordlist)
         return jsonify(result)
     
