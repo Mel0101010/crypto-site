@@ -1,3 +1,4 @@
+
 """
 Module pour le crackage de hash
 Implémente différentes méthodes pour tenter de retrouver un texte original à partir de son hash
