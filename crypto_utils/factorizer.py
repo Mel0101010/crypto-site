@@ -5,7 +5,6 @@ import math
 import time
 import random
 from factordb.factordb import FactorDB
-from .factorisation_bdd import initialize_local_db, check_local_db, save_to_local_db
 
 def factorize_using_factordb(n):
     """Factorise un nombre en utilisant FactorDB"""
@@ -216,7 +215,7 @@ def factorize_using_quadratic_sieve(n):
 def factorize_number(number, method=None):
     """
     Factorise un nombre en ses facteurs premiers.
-    Vérifie d'abord la base locale, puis utilise la méthode spécifiée.
+    Utilise la méthode spécifiée.
 
     Args:
         number (str): Le nombre à factoriser
@@ -240,17 +239,6 @@ def factorize_number(number, method=None):
                 'execution_time': time.time() - start_time
             }
 
-        # Initialiser la base de données si nécessaire
-        if not hasattr(factorize_number, 'db_initialized'):
-            initialize_local_db()
-            factorize_number.db_initialized = True
-
-        # Vérifier dans la base locale
-        cached_result = check_local_db(n)
-        if cached_result:
-            cached_result['execution_time'] = time.time() - start_time
-            return cached_result
-
         # Sélection de la méthode de factorisation
         if method == "factor-db":
             result = factorize_using_factordb(n)
@@ -265,9 +253,6 @@ def factorize_number(number, method=None):
         result['number'] = n
         result['execution_time'] = time.time() - start_time
 
-        # Sauvegarder dans la base locale si succès
-        if result.get('success'):
-            save_to_local_db(result)
 
         return result
 
